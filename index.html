@@ -91,6 +91,54 @@ footer a{color:#C9D3E6}
 @media (max-width:1023px){.s2{grid-column:span 3}.s4,.map{grid-column:span 6}nav{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.court{display:none}}
 @media (max-width:640px){.s2,.s3,.s4,.map{grid-column:span 6}.hide-m{display:none}.btn{padding:16px 18px 16px 20px}.ctas .btn{width:100%;justify-content:space-between}}
+
+/* ===== motion ===== */
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:72px}
+:root{--ease:cubic-bezier(.2,.7,.2,1)}
+header{transition:box-shadow .3s var(--ease)}
+header.scrolled{box-shadow:0 6px 24px rgba(11,27,58,.08)}
+.btn{transition:transform .25s var(--ease),filter .25s,box-shadow .25s var(--ease)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(11,27,58,.18)}
+.btn:active{transform:translateY(0)}
+.btn svg{transition:transform .25s var(--ease)}
+.btn:hover svg{transform:translateX(4px)}
+nav a{transition:color .2s;position:relative}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--navy);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+nav a:hover::after{transform:scaleX(1)}
+.card{transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(11,27,58,.08);border-color:#C9D3E6}
+.tab{transition:background-color .25s,color .25s,border-color .25s,transform .2s var(--ease)}
+.tab:hover{transform:translateY(-2px)}
+.cell{transition:transform .18s var(--ease),background-color .2s,border-color .2s,box-shadow .2s}
+.cell:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(11,27,58,.12)}
+.cell[aria-pressed=true]{animation:pop .32s var(--ease)}
+@keyframes pop{0%{transform:scale(.88)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+.grid.fade .row{animation:rowIn .45s var(--ease) both}
+.grid.fade .row:nth-child(2){animation-delay:.04s}.grid.fade .row:nth-child(3){animation-delay:.08s}.grid.fade .row:nth-child(4){animation-delay:.12s}.grid.fade .row:nth-child(5){animation-delay:.16s}.grid.fade .row:nth-child(6){animation-delay:.2s}.grid.fade .row:nth-child(7){animation-delay:.24s}.grid.fade .row:nth-child(8){animation-delay:.28s}
+@keyframes rowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.selbar.enter{animation:barIn .45s var(--ease) both}
+@keyframes barIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+/* hero entrance */
+.hero .eyebrow,.hero .h1 .ln1,.hero .h1 .ln2,.hero .lead,.hero .ctas,.stats>div{animation:up .9s var(--ease) both}
+.hero .h1 .ln1,.hero .h1 .ln2{display:inline-block}
+.hero .eyebrow{animation-delay:.05s}.hero .h1 .ln1{animation-delay:.15s}.hero .h1 .ln2{animation-delay:.28s}.hero .lead{animation-delay:.42s}.hero .ctas{animation-delay:.52s}
+.stats>div:nth-child(1){animation-delay:.62s}.stats>div:nth-child(2){animation-delay:.7s}.stats>div:nth-child(3){animation-delay:.78s}.stats>div:nth-child(4){animation-delay:.86s}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.court .ln{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.8s var(--ease) .3s forwards}
+.court .net{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s var(--ease) .9s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.court .ball{transform-box:fill-box;transform-origin:center;animation:ballIn .6s var(--ease) 1.6s both,float 3.2s ease-in-out 2.2s infinite}
+@keyframes ballIn{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* scroll reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+.rv{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
@@ -110,13 +158,13 @@ footer a{color:#C9D3E6}
 
 <section id="top" class="hero">
 <svg class="court" width="780" height="416" viewBox="0 0 900 480" fill="none" aria-hidden="true">
-<g stroke="#F4F6FA" stroke-opacity=".16" stroke-width="3"><rect x="20" y="20" width="860" height="440"/><line x1="20" y1="75" x2="880" y2="75"/><line x1="20" y1="405" x2="880" y2="405"/><line x1="220" y1="75" x2="220" y2="405"/><line x1="680" y1="75" x2="680" y2="405"/><line x1="220" y1="240" x2="680" y2="240"/></g>
-<line x1="450" y1="6" x2="450" y2="474" stroke="#D7F23A" stroke-width="4"/><circle cx="612" cy="150" r="16" fill="#D7F23A"/></svg>
+<g stroke="#F4F6FA" stroke-opacity=".16" stroke-width="3"><rect class="ln" pathLength="1" x="20" y="20" width="860" height="440"/><line class="ln" pathLength="1" x1="20" y1="75" x2="880" y2="75"/><line class="ln" pathLength="1" x1="20" y1="405" x2="880" y2="405"/><line class="ln" pathLength="1" x1="220" y1="75" x2="220" y2="405"/><line class="ln" pathLength="1" x1="680" y1="75" x2="680" y2="405"/><line class="ln" pathLength="1" x1="220" y1="240" x2="680" y2="240"/></g>
+<line class="net" pathLength="1" x1="450" y1="6" x2="450" y2="474" stroke="#D7F23A" stroke-width="4"/><circle class="ball" cx="612" cy="150" r="16" fill="#D7F23A"/></svg>
 <div class="wrap" style="position:relative;padding-top:clamp(56px,7.6vw,110px)">
 <div class="eyebrow"><span style="color:#C9D3E6">КИЇВ · ВДНГ / ІПОДРОМ</span>
 <span style="color:#D7F23A;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#D7F23A"></span>ВІДКРИТО 08:00–23:00</span></div>
-<h1 class="h1">Тенісні корти<br><span style="color:#D7F23A">на Льодовому</span></h1>
-<p style="margin-top:36px;max-width:540px;color:#C9D3E6;font-size:clamp(17px,1.4vw,20px)">Критий хард і відкритий ґрунт навпроти Іподрому. Вільний час видно одразу — бронюйте за хвилину, без дзвінків.</p>
+<h1 class="h1"><span class="ln1">Тенісні корти</span><br><span class="ln2" style="color:#D7F23A">на Льодовому</span></h1>
+<p class="lead" style="margin-top:36px;max-width:540px;color:#C9D3E6;font-size:clamp(17px,1.4vw,20px)">Критий хард і відкритий ґрунт навпроти Іподрому. Вільний час видно одразу — бронюйте за хвилину, без дзвінків.</p>
 <div class="ctas" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px">
 <a class="btn lime" href="#slots">Обрати вільний час<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="#0B1B3A" stroke-width="2"/></svg></a>
 <a class="btn ghost" href="#training">Тренування<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="#F4F6FA" stroke-width="2"/></svg></a>
@@ -263,16 +311,19 @@ footer a{color:#C9D3E6}
       html += '</div>';
     });
     if (!clayShown) html += '<div class="clayoff"><b>Ґрунт (корти 9–12) закрито</b> — відкриті корти не працюють з 1 листопада через погодні умови. Грайте на критому харді.</div>';
-    $('grid').innerHTML = html;
+    var g = $('grid'); g.innerHTML = html;
+    if (state.animGrid && !state.loading) { state.animGrid = false; g.classList.remove('fade'); void g.offsetWidth; g.classList.add('fade'); }
   }
 
+  var lastSel = '';
   function renderSel() {
     var s = state.sel;
-    if (!s) { $('selbar').innerHTML = ''; return; }
+    if (!s) { $('selbar').innerHTML = ''; lastSel = ''; return; }
     var t = courtType(s.court);
     var d = parseDate(state.date);
     var txt = 'Корт ' + s.court + ' (' + (t === 'hard' ? 'хард' : 'ґрунт') + ') · ' + WD[d.getDay()] + ' ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + ' · ' + pad(s.h) + ':00–' + pad(s.h + 1) + ':00 · ' + price(t, state.date, s.h) + ' ₴';
-    $('selbar').innerHTML = '<div class="selbar"><div><small>ВАШЕ БРОНЮВАННЯ</small><b>' + txt + '</b></div>' +
+    var key = state.date + s.court + s.h; if (key === lastSel) return; var wasOpen = !!lastSel; lastSel = key;
+    $('selbar').innerHTML = '<div class="selbar' + (wasOpen ? '' : ' enter') + '"><div><small>ВАШЕ БРОНЮВАННЯ</small><b>' + txt + '</b></div>' +
       '<a class="btn dark" href="' + bookUrl(state.date, s.court, s.h) + '">Забронювати<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5" stroke="#F4F6FA" stroke-width="2"/></svg></a></div>';
   }
 
@@ -318,17 +369,44 @@ footer a{color:#C9D3E6}
     var b = e.target.closest('.tab'); if (!b) return;
     var iso = b.getAttribute('data-date');
     if (iso === state.date) return;
-    state.date = iso; state.sel = null; state.free = {}; state.loading = true;
+    state.date = iso; state.sel = null; state.free = {}; state.loading = true; state.animGrid = true;
     renderTabs(); renderSel();
     load(iso, false);
   });
   $('grid').addEventListener('click', function (e) {
     var b = e.target.closest('.cell'); if (!b) return;
     var c = b.getAttribute('data-court'), h = +b.getAttribute('data-h');
-    state.sel = (state.sel && state.sel.court === c && state.sel.h === h) ? null : { court: c, h: h };
-    renderGrid(); renderSel();
+    var same = state.sel && state.sel.court === c && state.sel.h === h;
+    var prev = $('grid').querySelector('.cell[aria-pressed="true"]');
+    if (prev) prev.setAttribute('aria-pressed', 'false');
+    state.sel = same ? null : { court: c, h: h };
+    if (!same) b.setAttribute('aria-pressed', 'true');
+    renderSel();
   });
 
+  // header shadow
+  var hdr = document.querySelector('header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  // scroll reveal
+  (function () {
+    var els = document.querySelectorAll('section:not(.hero) .h2, section:not(.hero) .sub, section:not(.hero) .g6 > *, section:not(.hero) .ctas, #slots .tabs, #slots .scrollx, #slots .legend, section:not(.hero) .wrap > div[style*="background:var(--navy)"], footer .wrap > *');
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target; el.classList.add('in'); io.unobserve(el);
+        var d = parseInt(el.style.transitionDelay, 10) || 0;
+        setTimeout(function () { el.classList.remove('rv', 'in'); el.style.transitionDelay = ''; }, 900 + d);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    Array.prototype.forEach.call(els, function (el) {
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      if (el.parentElement && el.parentElement.classList.contains('g6')) el.style.transitionDelay = Math.min(sib, 5) * 80 + 'ms';
+      el.classList.add('rv'); io.observe(el);
+    });
+  })();
+  state.animGrid = true; state.loading = true;
   render();
   load(null, false);
   setInterval(function () { if (!document.hidden && state.date) load(state.date, true); }, POLL_MS);
