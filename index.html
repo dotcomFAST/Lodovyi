@@ -390,7 +390,7 @@ html{scroll-behavior:auto}
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
   // scroll reveal
   (function () {
-    var els = document.querySelectorAll('section:not(.hero) .h2, section:not(.hero) .sub, section:not(.hero) .g6 > *, section:not(.hero) .ctas, #slots .tabs, #slots .scrollx, #slots .legend, section:not(.hero) .wrap > div[style*="background:var(--navy)"], footer .wrap > *');
+    var els = document.querySelectorAll('section:not(.hero) .h2, section:not(.hero) .sub, section:not(.hero) .g6 > *, section:not(.hero) .ctas, #slots .tabs, #slots .scrollx, #slots .legend, section:not(.hero) .wrap > div[style*="background:var(--navy)"]');
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -399,12 +399,18 @@ html{scroll-behavior:auto}
         var d = parseInt(el.style.transitionDelay, 10) || 0;
         setTimeout(function () { el.classList.remove('rv', 'in'); el.style.transitionDelay = ''; }, 900 + d);
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0 });
     Array.prototype.forEach.call(els, function (el) {
       var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
       if (el.parentElement && el.parentElement.classList.contains('g6')) el.style.transitionDelay = Math.min(sib, 5) * 80 + 'ms';
       el.classList.add('rv'); io.observe(el);
     });
+    // safety: at the very bottom of the page reveal anything still hidden
+    window.addEventListener('scroll', function () {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        Array.prototype.forEach.call(document.querySelectorAll('.rv:not(.in)'), function (el) { el.classList.add('in'); });
+      }
+    }, { passive: true });
   })();
   state.animGrid = true; state.loading = true;
   render();
