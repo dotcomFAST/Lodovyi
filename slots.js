@@ -11,7 +11,11 @@ export default async function handler(req, res) {
 
   try {
     const r = await fetch(url, {
-      headers: { 'user-agent': 'LodovyiSite/1.0', accept: 'text/html' },
+      headers: {
+        'user-agent': 'Mozilla/5.0 (compatible; LodovyiSite/1.0; +https://vercel.com)',
+        accept: 'text/html,application/xhtml+xml',
+        'accept-language': 'uk-UA,uk;q=0.9',
+      },
       signal: AbortSignal.timeout(8000),
     });
     if (!r.ok) throw new Error(`upstream ${r.status}`);

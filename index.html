@@ -8,6 +8,9 @@
 <meta property="og:title" content="Тенісні корти на Льодовому">
 <meta property="og:description" content="Оберіть вільний час і забронюйте корт за хвилину.">
 <meta name="theme-color" content="#0B1B3A">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap">
@@ -147,7 +150,7 @@ footer a{color:#C9D3E6}
 <div class="s3 card"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px"><h3 style="font-size:24px;font-weight:800">Хард</h3><span style="color:var(--t3);font-size:14px">критий · корти 4–6</span></div>
 <div class="ptab"><div></div><div class="h">до 16:00</div><div class="h">після 16:00</div><div class="l">Будні</div><div class="p c">700 ₴</div><div class="p">800 ₴</div><div class="l">Вихідні</div><div class="p">800 ₴</div><div class="p c">700 ₴</div></div></div>
 <div class="s3 card"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px"><h3 style="font-size:24px;font-weight:800">Ґрунт</h3><span style="color:var(--t3);font-size:14px">відкритий · корти 9–12</span></div>
-<p style="margin-top:10px;font-size:14px;font-weight:700;color:var(--clay)">Не працює з 1 листопада через погоду. Відкриття: [дата?]</p>
+<p style="margin-top:10px;font-size:14px;font-weight:700;color:var(--clay)">Не працює з 1 листопада через погоду.</p>
 <div class="ptab"><div></div><div class="h">до 16:00</div><div class="h">після 16:00</div><div class="l">Будні</div><div class="p c">500 ₴</div><div class="p">600 ₴</div><div class="l">Вихідні</div><div class="p">600 ₴</div><div class="p c">500 ₴</div></div></div>
 </div></div></section>
 
@@ -242,7 +245,7 @@ footer a{color:#C9D3E6}
 
   function renderGrid() {
     var html = '<div class="row"><div class="lab"></div>' + HOURS.map(function (h) { return '<div class="hrs">' + pad(h) + ':00</div>'; }).join('') + '</div>';
-    var clayShown = clayOpen(state.date) || (state.loading && !state.date);
+    var clayShown = clayOpen(state.date || kyivToday());
     COURTS.forEach(function (c) {
       if (c.t === 'clay' && !clayShown) return;
       html += '<div class="row"><div class="lab"><b>Корт ' + c.n + '</b><small style="color:' + (c.t === 'hard' ? '#5B6B8A' : '#B4532A') + '">' + (c.t === 'hard' ? 'ХАРД · критий' : 'ҐРУНТ · відкритий') + '</small></div>';
@@ -304,8 +307,10 @@ footer a{color:#C9D3E6}
       (data.free || []).forEach(function (f) { state.free[f.court + '|' + f.time] = true; });
       if (state.sel && !state.free[state.sel.court + '|' + pad(state.sel.h) + ':00']) state.sel = null;
       state.at = data.fetchedAt; state.error = false;
-    }).catch(function () {
+    }).catch(function (err) {
+      if (window.console) console.warn('[slots] не вдалося завантажити /api/slots:', err);
       state.error = true;
+      if (!silent) setTimeout(function () { load(state.date, true); }, 10000);
     }).then(function () { state.loading = false; render(); });
   }
 
